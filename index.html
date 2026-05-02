@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CALC∞ — Smart Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Ambient background -->
+<div class="bg-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<div class="app-wrapper">
+
+  <!-- ── Header ── -->
+  <header class="app-header">
+    <div class="logo">CALC<span>∞</span></div>
+    <div class="header-controls">
+      <button id="themeToggle" class="icon-btn" title="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button id="historyToggle" class="icon-btn" title="Toggle history">
+        <svg viewBox="0 0 24 24"><polyline points="12 8 12 12 14 14"/><path d="M3.05 11a9 9 0 1 0 .5-4"/><polyline points="3 3 3 7 7 7"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="main-layout">
+
+    <!-- ── Calculator Panel ── -->
+    <section class="calc-panel">
+
+      <!-- Display -->
+      <div class="display-wrap">
+        <div class="display-expression" id="expression">0</div>
+        <div class="display-result" id="liveResult"></div>
+        <div class="display-mode" id="modeLabel">STANDARD</div>
+      </div>
+
+      <!-- Mode tabs -->
+      <div class="mode-tabs">
+        <button class="tab active" data-mode="standard">Standard</button>
+        <button class="tab" data-mode="scientific">Scientific</button>
+      </div>
+
+      <!-- Keypad -->
+      <div class="keypad" id="keypad">
+
+        <!-- Row 0: Top actions -->
+        <button class="btn btn-action wide-2" data-action="clear" id="clearBtn">AC</button>
+        <button class="btn btn-action" data-action="sign">±</button>
+        <button class="btn btn-action" data-action="percent">%</button>
+        <button class="btn btn-op" data-value="÷">÷</button>
+
+        <!-- Row 1 -->
+        <button class="btn btn-num" data-value="7">7</button>
+        <button class="btn btn-num" data-value="8">8</button>
+        <button class="btn btn-num" data-value="9">9</button>
+        <button class="btn btn-op" data-value="×">×</button>
+
+        <!-- Row 2 -->
+        <button class="btn btn-num" data-value="4">4</button>
+        <button class="btn btn-num" data-value="5">5</button>
+        <button class="btn btn-num" data-value="6">6</button>
+        <button class="btn btn-op" data-value="-">−</button>
+
+        <!-- Row 3 -->
+        <button class="btn btn-num" data-value="1">1</button>
+        <button class="btn btn-num" data-value="2">2</button>
+        <button class="btn btn-num" data-value="3">3</button>
+        <button class="btn btn-op" data-value="+">+</button>
+
+        <!-- Row 4 -->
+        <button class="btn btn-num wide-2" data-value="0">0</button>
+        <button class="btn btn-num" data-value=".">.</button>
+        <button class="btn btn-equals" data-action="equals">=</button>
+
+      </div><!-- /keypad -->
+
+      <!-- Scientific panel (hidden by default) -->
+      <div class="sci-panel" id="sciPanel">
+        <button class="btn btn-sci" data-value="sin(">sin</button>
+        <button class="btn btn-sci" data-value="cos(">cos</button>
+        <button class="btn btn-sci" data-value="tan(">tan</button>
+        <button class="btn btn-sci" data-value="log(">log</button>
+        <button class="btn btn-sci" data-value="sqrt(">√</button>
+        <button class="btn btn-sci" data-value="**2">x²</button>
+        <button class="btn btn-sci" data-value="**3">x³</button>
+        <button class="btn btn-sci" data-value="**">xⁿ</button>
+        <button class="btn btn-sci" data-value="π">π</button>
+        <button class="btn btn-sci" data-value="e">e</button>
+        <button class="btn btn-sci" data-value="(">(</button>
+        <button class="btn btn-sci" data-value=")">)</button>
+        <button class="btn btn-sci" data-value="1/">1/x</button>
+        <button class="btn btn-sci" data-value="abs(">|x|</button>
+        <button class="btn btn-sci" data-value="ceil(">⌈x⌉</button>
+        <button class="btn btn-sci" data-value="floor(">⌊x⌋</button>
+      </div>
+
+      <!-- Voice + DEL row -->
+      <div class="utility-row">
+        <button class="util-btn" id="voiceBtn" title="Voice input">
+          <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          <span>Voice</span>
+        </button>
+        <button class="util-btn" id="graphBtn" title="Plot graph">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span>Graph</span>
+        </button>
+        <button class="util-btn" data-action="backspace">
+          <svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
+          <span>Del</span>
+        </button>
+      </div>
+
+    </section><!-- /calc-panel -->
+
+    <!-- ── History Panel ── -->
+    <aside class="history-panel" id="historyPanel">
+      <div class="history-header">
+        <h2>History</h2>
+        <div class="history-actions">
+          <button class="text-btn" id="exportBtn">Export CSV</button>
+          <button class="text-btn danger" id="clearHistoryBtn">Clear All</button>
+        </div>
+      </div>
+      <div class="history-list" id="historyList">
+        <div class="history-empty">No calculations yet</div>
+      </div>
+    </aside>
+
+  </main><!-- /main-layout -->
+
+</div><!-- /app-wrapper -->
+
+<!-- ── Graph Modal ── -->
+<div class="modal-overlay" id="graphModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Graph Plotter</h3>
+      <button class="close-btn" id="closeGraph">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="graph-input-row">
+        <input class="graph-input" id="graphExpr" placeholder="e.g. x**2, sin(x), x**3 - 2*x" />
+        <button class="plot-btn" id="plotBtn">Plot</button>
+      </div>
+      <canvas id="graphCanvas"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ── Voice Modal ── -->
+<div class="modal-overlay" id="voiceModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <h3>Voice Input</h3>
+      <button class="close-btn" id="closeVoice">✕</button>
+    </div>
+    <div class="modal-body voice-body">
+      <div class="pulse-ring" id="pulseRing"></div>
+      <p id="voiceStatus">Press the mic to start speaking…</p>
+      <button class="plot-btn" id="startVoice">🎤 Start</button>
+      <p class="voice-hint">Say something like: "two plus three" or "sine of ninety"</p>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
